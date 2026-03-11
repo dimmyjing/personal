@@ -1,0 +1,17 @@
+imager_server_type = "cpx11"
+cluster_name = "talos-cluster"
+talos_version_contract = "v1.12"
+talos_version = "v1.12.5"
+kubernetes_version = "1.35.2"
+controlplane_count = 1
+controlplane_type = "cpx11"
+allow_scheduling_on_controlplane = false
+private_network_name = "talos-network"
+private_network_ip_range = "10.0.0.0/16"
+private_network_subnet_range = "10.0.0.0/24"
+network_zone = "us-east"
+load_balancer_type = "lb11"
+location = "ash"
+workers = {}
+flux_git_repo_url = "https://github.com/dimmyjing/personal"
+flux_author_email = "git@jimmyding.com"

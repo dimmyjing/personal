@@ -1,0 +1,47 @@
+# experimental_monorepo_root = true
+
+[tools]
+flux2 = "latest"
+fnox = "latest"
+opentofu = "latest"
+sops = "latest"
+
+[tasks."tofu:init"]
+description = "Initialize OpenTofu"
+run = ["tofu init"]
+dir = "./terraform"
+
+[tasks."tofu:plan"]
+description = "Generate and show an execution plan for OpenTofu"
+run = ["tofu plan"]
+dir = "./terraform"
+
+[tasks."tofu:apply"]
+description = "Apply the changes required to reach the desired state of the configuration for OpenTofu"
+run = ["tofu apply -auto-approve"]
+dir = "./terraform"
+
+[tasks.reconcile]
+description = "Reconcile the Talos cluster using Flux"
+run = [
+  "flux reconcile source git flux-system",
+  "flux reconcile kustomization flux-system"
+]
+
+[settings]
+lockfile = true
+
+[env]
+_.fnox-env = { tools = true }
+FNOX_AGE_KEY_FILE = "~/.ssh/id_ed25519"
+TALOSCONFIG = "{{config_root}}/config/talosconfig"
+KUBECONFIG = "{{config_root}}/config/kubeconfig"
+SOPS_AGE_KEY_FILE = "{{config_root}}/config/key.txt"
+
+# [tools]
+# flux2 = "latest"
+# kubectl = "latest"
+# opentofu = "latest"
+# packer = "latest"
+# sops = "latest"
+# talosctl = "latest"
