@@ -14,6 +14,10 @@ provider "kubernetes" {
   config_path = "../config/kubeconfig"
 }
 
+provider "kubectl" {
+  config_path = "../config/kubeconfig"
+}
+
 provider "flux" {
   kubernetes = {
     config_path = "../config/kubeconfig"

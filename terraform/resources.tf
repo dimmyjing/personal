@@ -169,6 +169,102 @@ resource "local_file" "kubeconfig" {
   content  = talos_cluster_kubeconfig.this.kubeconfig_raw
 }
 
+data "helm_template" "cilium_default" {
+  name      = "cilium"
+  namespace = "kube-system"
+
+  repository   = "https://helm.cilium.io"
+  chart        = "cilium"
+  version      = var.cilium_version
+  kube_version = var.kubernetes_version
+
+  set = concat(
+    [
+      {
+        name  = "operator.replicas"
+        value = var.controlplane_count < 3 ? 1 : 3
+      },
+      {
+        name  = "ipam.mode"
+        value = "kubernetes"
+      },
+      {
+        name  = "routingMode"
+        value = "native"
+      },
+      {
+        name  = "ipv4NativeRoutingCIDR"
+        value = "10.0.16.0/20"
+      },
+      {
+        name  = "kubeProxyReplacement"
+        value = "true"
+      },
+      {
+        // tailscale does not support XDP and therefore native fails. with best-effort we can fallthrough without failing!
+        // see more: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#loadbalancer-nodeport-xdp-acceleration
+        name  = "loadBalancer.acceleration"
+        value = "best-effort"
+      },
+      {
+        name  = "encryption.enabled"
+        value = "true"
+      },
+      {
+        name  = "encryption.type"
+        value = "wireguard"
+      },
+      {
+        name  = "securityContext.capabilities.ciliumAgent"
+        value = "{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
+      },
+      {
+        name  = "securityContext.capabilities.cleanCiliumState"
+        value = "{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
+      },
+      {
+        name  = "cgroup.autoMount.enabled"
+        value = "false"
+      },
+      {
+        name  = "cgroup.hostRoot"
+        value = "/sys/fs/cgroup"
+      },
+      {
+        name  = "k8sServiceHost"
+        value = hcloud_load_balancer.controlplane_load_balancer.ipv4
+      },
+      {
+        name  = "k8sServicePort"
+        value = "6443"
+      },
+      {
+        name  = "gatewayAPI.enabled"
+        value = "true"
+      },
+      {
+        name  = "gatewayAPI.enableAlpn"
+        value = "true"
+      },
+      {
+        name  = "gatewayAPI.enableAppProtocol"
+        value = "true"
+      },
+    ],
+  )
+}
+
+data "kubectl_file_documents" "cilium" {
+  content = data.helm_template.cilium_default[0].manifest
+}
+
+resource "kubectl_manifest" "apply_cilium" {
+  for_each   = data.kubectl_file_documents.cilium[0].manifests
+  yaml_body  = each.value
+  apply_only = true
+  depends_on = [data.http.talos_health]
+}
+
 resource "kubernetes_namespace_v1" "flux-system" {
   metadata {
     name = "flux-system"
@@ -194,5 +290,5 @@ resource "flux_bootstrap_git" "flux" {
   depends_on         = [kubernetes_secret_v1.sops-age]
   embedded_manifests = true
   components_extra   = ["image-reflector-controller", "image-automation-controller"]
-  path               = "clusters/production"
+  path               = "clusters/hetzner-prod"
 }

@@ -3,6 +3,7 @@ cluster_name = "talos-cluster"
 talos_version_contract = "v1.12"
 talos_version = "v1.12.5"
 kubernetes_version = "1.35.2"
+cilium_version = "1.19.1"
 controlplane_count = 1
 controlplane_type = "cpx11"
 allow_scheduling_on_controlplane = false

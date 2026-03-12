@@ -37,6 +37,12 @@ variable "kubernetes_version" {
   default     = null
 }
 
+variable "cilium_version" {
+  description = "Cilium version to deploy"
+  type        = string
+  default     = "1.19.1"
+}
+
 variable "controlplane_count" {
   description = "Number of control plane nodes to create"
   type        = number
