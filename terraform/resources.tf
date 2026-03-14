@@ -78,7 +78,7 @@ resource "kubernetes_namespace_v1" "flux-system" {
   metadata {
     name = "flux-system"
   }
-  depends_on = [module.talos.kubeconfig]
+  depends_on = [module.talos.kubeconfig, cloudflare_dns_record.cluster_api]
   lifecycle {
     ignore_changes = all
   }
