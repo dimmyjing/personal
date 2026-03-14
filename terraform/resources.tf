@@ -49,8 +49,8 @@ module "talos" {
   kubernetes_version              = var.kubernetes_version
   cilium_version                  = var.cilium_version
   cilium_enable_encryption        = true
-  cilium_enable_service_monitors  = true
-  deploy_prometheus_operator_crds = true
+  cilium_enable_service_monitors  = false
+  deploy_prometheus_operator_crds = false
 }
 
 resource "cloudflare_dns_record" "cluster_api" {
