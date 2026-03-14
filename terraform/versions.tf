@@ -31,14 +31,9 @@ terraform {
       version = "~> 3.0"
     }
 
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 3.1"
-    }
-
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "~> 1.19"
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
     }
   }
 

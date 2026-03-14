@@ -5,6 +5,7 @@ flux2 = "latest"
 fnox = "latest"
 opentofu = "latest"
 sops = "latest"
+talos = "latest"
 
 [tasks."tofu:init"]
 description = "Initialize OpenTofu"

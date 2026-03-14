@@ -33,3 +33,12 @@ backend = "aqua:getsops/sops"
 "platforms.macos-arm64" = { checksum = "sha256:3a23c388e2d7b9beff306f4817d197698b1d9ddf01c10020470c94225435e901", url = "https://github.com/getsops/sops/releases/download/v3.12.1/sops-v3.12.1.darwin.arm64"}
 "platforms.macos-x64" = { checksum = "sha256:d6d296499e08d62325d933e4572fe8b6b9b11d0c08ee00d09b518a2731814c7b", url = "https://github.com/getsops/sops/releases/download/v3.12.1/sops-v3.12.1.darwin.amd64"}
 "platforms.windows-x64" = { checksum = "sha256:161eff06643ca77cc0585099e0888d04897827162fd62bdb79cc1bcff933330f", url = "https://github.com/getsops/sops/releases/download/v3.12.1/sops-v3.12.1.amd64.exe"}
+
+[[tools.talos]]
+version = "1.12.5"
+backend = "aqua:siderolabs/talos"
+"platforms.linux-arm64" = { checksum = "sha256:108b1745ddb98838b15537e6f7951d25cfaafbda62c5740d38273ddb1aea0fb1", url = "https://github.com/siderolabs/talos/releases/download/v1.12.5/talosctl-linux-arm64"}
+"platforms.linux-x64" = { checksum = "sha256:3fbd456ec98f96dca42de0528220898177077bf023e3ae9432fb90a2dbe8cf66", url = "https://github.com/siderolabs/talos/releases/download/v1.12.5/talosctl-linux-amd64"}
+"platforms.macos-arm64" = { checksum = "sha256:8e4adec89acea650008f65b5e53c601a5115b3b5d6b6d15a8c215e533451b8a6", url = "https://github.com/siderolabs/talos/releases/download/v1.12.5/talosctl-darwin-arm64"}
+"platforms.macos-x64" = { checksum = "sha256:8a58a951144d7f1a8eec4b6bb725553e4cf0d9c5b66785a8e0247890ec144f10", url = "https://github.com/siderolabs/talos/releases/download/v1.12.5/talosctl-darwin-amd64"}
+"platforms.windows-x64" = { checksum = "sha256:73f558b05a5babcf45ab707c486ff17439a2f6dc34fc76ab103adb439d9c634a", url = "https://github.com/siderolabs/talos/releases/download/v1.12.5/talosctl-windows-amd64.exe"}
